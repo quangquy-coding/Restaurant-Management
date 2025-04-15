@@ -104,11 +104,11 @@ const LoginPage = () => {
           
           " >
             <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800 transition duration-200">
-              Bạn quên mật khẩu ư?
+              Quên mật khẩu ?
             </Link>
             <span className="mx-2" ></span>
             <Link to="/register" className="text-blue-600 hover:text-blue-800 transition duration-200">
-              Đăng ký tài khoản
+              Đăng ký ngay
             </Link>
           </div>
         </div>
