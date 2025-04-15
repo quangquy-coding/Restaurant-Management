@@ -1,12 +1,5 @@
-import React from "react"
-
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-
-
-
-
-
 import { motion } from "framer-motion"
 
 const BlogPage = () => {
@@ -16,7 +9,6 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Simulate fetching blog posts from API
     setTimeout(() => {
       const mockPosts = [
         {
@@ -78,8 +70,8 @@ const BlogPage = () => {
     }, 1000)
   }, [])
 
-  const filteredPosts = selectedCategory === "all" 
-    ? posts 
+  const filteredPosts = selectedCategory === "all"
+    ? posts
     : posts.filter(post => post.category === selectedCategory)
 
   if (loading) {
@@ -93,10 +85,10 @@ const BlogPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">Blog Ẩm Thực</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">Blog Ẩm Thực</h1>
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
           Khám phá những bài viết thú vị về ẩm thực, mẹo nấu ăn, và tin tức mới nhất từ nhà hàng chúng tôi.
         </p>
       </div>
@@ -129,34 +121,34 @@ const BlogPage = () => {
       </div>
 
       {/* Blog Posts */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredPosts.map((post) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300"
           >
             <Link to={`/blog/${post.id}`}>
               <img
                 src={post.image || "/placeholder.svg"}
                 alt={post.title}
-                className="w-full h-100 object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full h-48 sm:h-56 md:h-64 object-cover hover:scale-105 transition-transform duration-300"
               />
             </Link>
-            <div className="p-6">
+            <div className="p-5 sm:p-6">
               <div className="flex items-center text-sm text-gray-500 mb-2">
                 <span>{post.date}</span>
                 <span className="mx-2">•</span>
                 <span>{post.readTime}</span>
               </div>
               <Link to={`/blog/${post.id}`}>
-                <h2 className="text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
                   {post.title}
                 </h2>
               </Link>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <p className="text-gray-600 mb-4 text-sm sm:text-base">{post.excerpt}</p>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-blue-600">{post.category}</span>
                 <Link
@@ -172,13 +164,13 @@ const BlogPage = () => {
       </div>
 
       {/* Newsletter Subscription */}
-      <div className="mt-20 bg-blue-50 rounded-xl p-8 md:p-12">
+      <div className="mt-20 bg-blue-50 rounded-xl px-6 py-10 sm:px-10 sm:py-12 md:py-16">
         <div className="max-w-2xl mx-auto text-center">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Đăng ký nhận bản tin</h3>
           <p className="text-gray-600 mb-6">
             Nhận thông báo về các bài viết mới và ưu đãi đặc biệt từ nhà hàng chúng tôi.
           </p>
-          <form className="flex flex-row gap-2">
+          <form className="flex flex-col sm:flex-row gap-4 sm:gap-2">
             <input
               type="email"
               placeholder="Địa chỉ email của bạn"

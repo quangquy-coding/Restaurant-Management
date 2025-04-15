@@ -536,102 +536,103 @@ const AdvancedSearchPage = () => {
   
           {/* Menu items grid */}
           <div className={`${showFilters ? "md:w-3/4" : "w-full"}`}>
-            {filteredItems.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-lg shadow">
-                <p className="text-gray-500 mb-4">Không tìm thấy món ăn phù hợp</p>
-                <button
-                  onClick={resetFilters}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Đặt lại bộ lọc
-                </button>
+  {filteredItems.length === 0 ? (
+    <div className="text-center py-12 bg-white rounded-lg shadow">
+      <p className="text-gray-500 mb-4">Không tìm thấy món ăn phù hợp</p>
+      <button
+        onClick={resetFilters}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      >
+        Đặt lại bộ lọc
+      </button>
+    </div>
+  ) : (
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      {filteredItems.map((item) => (
+        <div key={item.id} className="block relative">
+          {/* Toàn bộ phần này sẽ kích hoạt Link, ngoại trừ phần giỏ hàng */}
+          <Link to={`/menu/${item.id}`} className="block">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              {/* Ảnh món ăn */}
+              <div className="relative w-full aspect-[4/3] bg-gray-100">
+                <img
+                  src={item.image || "/placeholder.svg"}
+                  alt={item.name}
+                  className="w-full h-full object-cover rounded-t-lg"
+                  loading="lazy"
+                />
+                {item.isSpecial && (
+                  <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                    Đặc biệt
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                {filteredItems.map((item) => (
-                  <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div className="relative w-full aspect-[4/3] bg-gray-100">
-                      <img
-                        src={item.image || "/placeholder.svg"}
-                        alt={item.name}
-                        className="w-full h-full object-cover rounded-t-lg"
-                        loading="lazy"
-                      />
-                      {item.isSpecial && (
-                        <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                          Đặc biệt
-                        </div>
-                      )}
-                      <div className="absolute bottom-2 left-2 flex space-x-1">
-                        {item.dietaryInfo.map((diet, index) => (
-                          <span
-                            key={index}
-                            className="bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-full"
-                          >
-                            {diet}
+
+              <div className="p-4">
+                {/* Tên món ăn */}
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-bold text-lg">{item.name}</h3>
+                  <div className="flex items-center">
+                    {item.spicyLevel > 0 && (
+                      <div className="flex">
+                        {[...Array(item.spicyLevel)].map((_, i) => (
+                          <span key={i} className="text-red-500">
+                            🌶️
                           </span>
                         ))}
                       </div>
-                    </div>
-  
-                    <div className="p-4">
-                      <div className="flex justify-between items-start mb-1">
-                        <h3 className="font-bold text-lg">{item.name}</h3>
-                        <div className="flex items-center">
-                          {item.spicyLevel > 0 && (
-                            <div className="flex">
-                              {[...Array(item.spicyLevel)].map((_, i) => (
-                                <span key={i} className="text-red-500">
-                                  🌶️
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-  
-                      <p className="text-gray-600 text-sm mb-2 line-clamp-2">{item.description}</p>
-  
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {item.ingredients.slice(0, 3).map((ingredient, index) => (
-                          <span key={index} className="bg-gray-100 text-xs px-2 py-1 rounded-full">
-                            {ingredient}
-                          </span>
-                        ))}
-                        {item.ingredients.length > 3 && (
-                          <span className="bg-gray-100 text-xs px-2 py-1 rounded-full">
-                            +{item.ingredients.length - 3}
-                          </span>
-                        )}
-                      </div>
-  
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <span className="font-bold text-lg">{item.price.toLocaleString("vi-VN")} ₫</span>
-                          <div className="text-xs text-gray-500">
-                            {item.prepTime} phút • {item.calories} cal
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Link to={`/menu/${item.id}`}>
-                            <button className="bg-gray-100 text-blue-600 px-3 py-1 rounded-md hover:bg-gray-200 transition-colors text-sm">
-                              <FaEye className="h-4 w-4" />
-                            </button>
-                          </Link>
-                          <button
-                            onClick={() => addToCart(item)}
-                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm"
-                          >
-                            <ShoppingCart className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Mô tả món ăn */}
+                <p className="text-gray-600 text-sm mb-2 line-clamp-2">{item.description}</p>
+
+                {/* Nguyên liệu */}
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {item.ingredients.slice(0, 3).map((ingredient, index) => (
+                    <span key={index} className="bg-gray-100 text-xs px-2 py-1 rounded-full">
+                      {ingredient}
+                    </span>
+                  ))}
+                  {item.ingredients.length > 3 && (
+                    <span className="bg-gray-100 text-xs px-2 py-1 rounded-full">
+                      +{item.ingredients.length - 3}
+                    </span>
+                  )}
+                </div>
+
+                {/* Giá và thời gian chuẩn bị */}
+                <div className="flex justify-between items-center">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-lg sm:text-base md:text-lg text-gray-800 ml-2">
+                      {item.price.toLocaleString("vi-VN")} ₫
+                    </span>
+                    <div className="text-xs text-gray-500">
+                      {item.prepTime} phút • {item.calories} cal
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+          </Link>
+
+          {/* Nút giỏ hàng sẽ không kích hoạt Link */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // Ngừng sự kiện của Link khi nhấn vào giỏ hàng
+              addToCart(item);  // Thực hiện chức năng thêm vào giỏ hàng
+            }}
+            className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors text-sm"
+          >
+            <ShoppingCart className="h-5 w-5" />
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
         </div>
       </div>
     </div>

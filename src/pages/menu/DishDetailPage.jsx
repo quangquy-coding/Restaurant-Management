@@ -153,6 +153,7 @@ const DishDetailPage = () => {
   const [relatedDishes, setRelatedDishes] = useState([])
 
   useEffect(() => {
+    
     // In a real app, you would fetch dish data from an API
     // For now, we'll use mock data
     setLoading(true)
@@ -201,6 +202,7 @@ const DishDetailPage = () => {
 
     // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart))
+    window.dispatchEvent(new CustomEvent("cartUpdated", { detail: { cart } }))
 
     // Show success message
     alert(`Đã thêm ${quantity} ${dish.name} vào giỏ hàng!`)

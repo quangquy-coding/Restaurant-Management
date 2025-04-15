@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, Star, Clock, MapPin } from "lucide-react"
+import { ArrowRight, Star, Clock, MapPin,ShoppingCart} from "lucide-react"
 
 import Quy from "../../assets/quy.jpg"
 import Phobotai from "../../assets/phobotai.png"
@@ -185,7 +185,7 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
   {featuredDishes.map((dish) => (
     <div key={dish.id} className="bg-white rounded-lg shadow-md overflow-hidden">
     <img src={dish.image} className="w-full aspect-[4/3] object-cover" />
@@ -199,9 +199,9 @@ const HomePage = () => {
           <span className="font-bold text-lg">{dish.price.toLocaleString("vi-VN")} ₫</span>
           <button
             onClick={() => addToCart(dish)}
-            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+            className="px-3 py-1 bg-red-600 text-white rounded hover:bg-blue-700 text-sm"
           >
-            Thêm vào giỏ
+            <ShoppingCart className="h-4 w-4 inline-block mr-1" />
           </button>
         </div>
       </div>

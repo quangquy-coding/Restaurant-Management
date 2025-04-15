@@ -60,7 +60,7 @@ const Footer = () => {
                   to="/menu"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Thực đơn
+                 Danh sách 
                 </Link>
               </li>
               <li>
@@ -85,6 +85,14 @@ const Footer = () => {
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Liên hệ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blog"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Blog Ẩm Thực
                 </Link>
               </li>
             </ul>
