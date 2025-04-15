@@ -1,15 +1,14 @@
-import React from "react"
-import Quy from '../../assets/quy.jpg'
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight, Star, Clock, MapPin } from "lucide-react"
-import Phobotai from '../../assets/phobotai.png'
-import Tomthit from '../../assets/tomthit.jpg'
-import Buncha from '../../assets/buncha.jpg'
-import Comrang from '../../assets/comrang.jpg'
 
+import Quy from "../../assets/quy.jpg"
+import Phobotai from "../../assets/phobotai.png"
+import Tomthit from "../../assets/tomthit.jpg"
+import Buncha from "../../assets/buncha.jpg"
+import Comrang from "../../assets/comrang.jpg"
 
-// Mock data for featured dishes
+// Dữ liệu món ăn nổi bật
 const featuredDishes = [
   {
     id: 1,
@@ -45,7 +44,7 @@ const featuredDishes = [
   },
 ]
 
-// Mock data for testimonials
+// Dữ liệu đánh giá
 const testimonials = [
   {
     id: 1,
@@ -80,66 +79,53 @@ const HomePage = () => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
     }, 5000)
-
     return () => clearInterval(interval)
   }, [])
 
   const addToCart = (dish) => {
-    // Get current cart from localStorage
     const savedCart = localStorage.getItem("cart")
     const cart = savedCart ? JSON.parse(savedCart) : []
+    const existingIndex = cart.findIndex((item) => item.id === dish.id)
 
-    // Check if item already exists in cart
-    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === dish.id)
-
-    if (existingItemIndex !== -1) {
-      // Increment quantity if item already exists
-      cart[existingItemIndex].quantity += 1
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1
     } else {
-      // Add new item to cart
-      cart.push({
-        ...dish,
-        quantity: 1,
-      })
+      cart.push({ ...dish, quantity: 1 })
     }
 
-    // Save updated cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart))
-
-    // Trigger storage event for header to update cart count
     window.dispatchEvent(new Event("storage"))
   }
 
   return (
     <div>
+
       {/* Hero Section */}
       <section className="relative h-screen flex items-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('/placeholder.svg?height=1080&width=1920')",
-          }}
+          style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center md:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Trải nghiệm ẩm thực tuyệt vời tại Nhà hàng Quang Quý
             </h1>
             <p className="text-xl text-white mb-8">
               Khám phá hương vị đặc trưng với các món ăn được chế biến từ nguyên liệu tươi ngon nhất
             </p>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Link
                 to="/menu"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="px-6 py-3 rounded-md text-white bg-blue-600 hover:bg-blue-700 text-base font-medium text-center"
               >
                 Xem thực đơn
               </Link>
               <Link
                 to="/reservation"
-                className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:bg-opacity-10"
+                className="px-6 py-3 rounded-md border border-white text-white hover:bg-white hover:bg-opacity-10 text-base font-medium text-center"
               >
                 Đặt bàn ngay
               </Link>
@@ -151,23 +137,17 @@ const HomePage = () => {
       {/* About Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex flex-row items-center gap-12">
-            <div className="md:w-1/2">
-              <img
-                src={Quy}
-                alt="Nhà hàng Quang Quý"
-                className="rounded-lg shadow-lg w-full h-auto"
-              />
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            <div className="w-full md:w-1/2">
+              <img src={Quy} alt="Nhà hàng Quang Quý" className="rounded-lg shadow-lg w-full h-auto" />
             </div>
-            <div className="md:w-1/2">
+            <div className="w-full md:w-1/2">
               <h2 className="text-3xl font-bold mb-6">Về Nhà hàng Quang Quý</h2>
               <p className="text-gray-600 mb-6">
-                Nhà hàng Quang Quý được thành lập vào năm 2025, với sứ mệnh mang đến cho khách hàng những trải nghiệm ẩm thực
-                tuyệt vời nhất. Chúng tôi tự hào về không gian sang trọng, món ăn đặc sắc và dịch vụ chuyên nghiệp.
+                Nhà hàng Quang Quý được thành lập vào năm 2025, với sứ mệnh mang đến cho khách hàng những trải nghiệm ẩm thực tuyệt vời nhất.
               </p>
               <p className="text-gray-600 mb-6">
-                Với đội ngũ đầu bếp giàu kinh nghiệm, chúng tôi luôn đảm bảo mỗi món ăn đều được chế biến từ những
-                nguyên liệu tươi ngon nhất, mang đến hương vị đặc trưng không thể trộn lẫn.
+                Với đội ngũ đầu bếp giàu kinh nghiệm, chúng tôi luôn đảm bảo mỗi món ăn đều được chế biến từ những nguyên liệu tươi ngon nhất.
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="flex items-center">
@@ -205,34 +185,34 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-4 gap-8">
-            {featuredDishes.map((dish) => (
-              <div key={dish.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src={dish.image || "/placeholder.svg"} alt={dish.name} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                  <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
-                    {dish.category}
-                  </div>
-                  <h3 className="text-lg font-bold mb-2">{dish.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{dish.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-lg">{dish.price.toLocaleString("vi-VN")} ₫</span>
-                    <button
-                      onClick={() => addToCart(dish)}
-                      className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
-                    >
-                      Thêm vào giỏ
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {featuredDishes.map((dish) => (
+    <div key={dish.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+    <img src={dish.image} className="w-full aspect-[4/3] object-cover" />
+      <div className="p-4">
+        <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
+          {dish.category}
+        </div>
+        <h3 className="text-lg font-bold mb-2">{dish.name}</h3>
+        <p className="text-gray-600 text-sm mb-4">{dish.description}</p>
+        <div className="flex justify-between items-center">
+          <span className="font-bold text-lg">{dish.price.toLocaleString("vi-VN")} ₫</span>
+          <button
+            onClick={() => addToCart(dish)}
+            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+          >
+            Thêm vào giỏ
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
           <div className="text-center mt-10">
             <Link
               to="/menu"
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              className="px-6 py-3 rounded-md text-white bg-blue-600 hover:bg-blue-700 text-base font-medium"
             >
               Xem toàn bộ thực đơn
             </Link>
@@ -257,7 +237,7 @@ const HomePage = () => {
                   <button
                     key={index}
                     onClick={() => setCurrentTestimonial(index)}
-                    className={`h-3 w-3 mx-1 rounded-full ${
+                    className={`h-3 w-3 sm:h-4 sm:w-4 mx-1 rounded-full ${
                       currentTestimonial === index ? "bg-blue-600" : "bg-gray-300"
                     }`}
                   ></button>
@@ -270,7 +250,9 @@ const HomePage = () => {
                     <Star key={i} className="h-6 w-6 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-gray-600 text-lg italic mb-6">"{testimonials[currentTestimonial].comment}"</p>
+                <p className="text-gray-600 text-lg italic mb-6">
+                  "{testimonials[currentTestimonial].comment}"
+                </p>
                 <div className="font-bold">{testimonials[currentTestimonial].name}</div>
                 <div className="text-gray-500 text-sm">{testimonials[currentTestimonial].date}</div>
               </div>
@@ -279,7 +261,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Reservation CTA Section */}
+      {/* CTA Section */}
       <section className="py-16 bg-blue-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Đặt bàn ngay hôm nay</h2>
