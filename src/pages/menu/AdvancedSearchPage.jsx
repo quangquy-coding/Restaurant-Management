@@ -369,7 +369,7 @@ const AdvancedSearchPage = () => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold">Danh mục</h1>
-
+  
             <div className="flex items-center">
               <div className="relative mr-4">
                 <input
@@ -381,25 +381,16 @@ const AdvancedSearchPage = () => {
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               </div>
-
+  
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`p-2 rounded-full hover:bg-gray-100 mr-2 ${showFilters ? "bg-blue-50 text-blue-600" : ""}`}
               >
                 <Sliders className="h-5 w-5" />
               </button>
-
-              {/* <Link to="/cart" className="relative p-2 rounded-full hover:bg-gray-100">
-                <ShoppingCart className="h-5 w-5" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link> */}
             </div>
           </div>
-
+  
           {/* Category filters */}
           <div className="mt-4 pb-2 overflow-x-auto">
             <div className="flex space-x-2">
@@ -420,7 +411,7 @@ const AdvancedSearchPage = () => {
           </div>
         </div>
       </div>
-
+  
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex flex-row gap-6">
           {/* Advanced filters sidebar */}
@@ -432,7 +423,7 @@ const AdvancedSearchPage = () => {
                   Đặt lại
                 </button>
               </div>
-
+  
               {/* Price range filter */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium mb-2">Khoảng giá</h3>
@@ -450,7 +441,7 @@ const AdvancedSearchPage = () => {
                   className="w-full h-2 bg-blue-100 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
-
+  
               {/* Dietary options */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium mb-2">Chế độ ăn</h3>
@@ -471,7 +462,7 @@ const AdvancedSearchPage = () => {
                   ))}
                 </div>
               </div>
-
+  
               {/* Spicy level */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium mb-2">Độ cay (tối đa)</h3>
@@ -489,7 +480,7 @@ const AdvancedSearchPage = () => {
                   ))}
                 </div>
               </div>
-
+  
               {/* Prep time */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium mb-2">Thời gian chuẩn bị (tối đa)</h3>
@@ -507,7 +498,7 @@ const AdvancedSearchPage = () => {
                   className="w-full h-2 bg-blue-100 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
-
+  
               {/* Calories */}
               <div className="mb-6">
                 <h3 className="text-sm font-medium mb-2">Calories (tối đa)</h3>
@@ -525,7 +516,7 @@ const AdvancedSearchPage = () => {
                   className="w-full h-2 bg-blue-100 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
-
+  
               {/* Sort options */}
               <div>
                 <h3 className="text-sm font-medium mb-2">Sắp xếp theo</h3>
@@ -542,7 +533,7 @@ const AdvancedSearchPage = () => {
               </div>
             </div>
           )}
-
+  
           {/* Menu items grid */}
           <div className={`${showFilters ? "md:w-3/4" : "w-full"}`}>
             {filteredItems.length === 0 ? (
@@ -556,14 +547,15 @@ const AdvancedSearchPage = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {filteredItems.map((item) => (
                   <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div className="relative h-48">
+                    <div className="relative w-full aspect-[4/3] bg-gray-100">
                       <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
+                        loading="lazy"
                       />
                       {item.isSpecial && (
                         <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
@@ -581,7 +573,7 @@ const AdvancedSearchPage = () => {
                         ))}
                       </div>
                     </div>
-
+  
                     <div className="p-4">
                       <div className="flex justify-between items-start mb-1">
                         <h3 className="font-bold text-lg">{item.name}</h3>
@@ -597,9 +589,9 @@ const AdvancedSearchPage = () => {
                           )}
                         </div>
                       </div>
-
+  
                       <p className="text-gray-600 text-sm mb-2 line-clamp-2">{item.description}</p>
-
+  
                       <div className="flex flex-wrap gap-1 mb-3">
                         {item.ingredients.slice(0, 3).map((ingredient, index) => (
                           <span key={index} className="bg-gray-100 text-xs px-2 py-1 rounded-full">
@@ -612,28 +604,28 @@ const AdvancedSearchPage = () => {
                           </span>
                         )}
                       </div>
-
+  
                       <div className="flex justify-between items-center">
                         <div>
                           <span className="font-bold text-lg">{item.price.toLocaleString("vi-VN")} ₫</span>
                           <div className="text-xs text-gray-500">
                             {item.prepTime} phút • {item.calories} cal
-                        </div>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
-                        <Link to={`/menu/${item.id}`}>
-                          <button className="bg-gray-100 text-blue-600 px-3 py-1 rounded-md hover:bg-gray-200 transition-colors text-sm">
-                            <FaEye className="h-4 w-4" />
+                          <Link to={`/menu/${item.id}`}>
+                            <button className="bg-gray-100 text-blue-600 px-3 py-1 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                              <FaEye className="h-4 w-4" />
+                            </button>
+                          </Link>
+                          <button
+                            onClick={() => addToCart(item)}
+                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm"
+                          >
+                            <ShoppingCart className="h-4 w-4" />
                           </button>
-                        </Link>
-                        <button
-                          onClick={() => addToCart(item)}
-                          className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 transition-colors text-sm"
-                        >
-                          <ShoppingCart className="h-4 w-4" />
-                        </button>
                         </div>
-                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -644,6 +636,6 @@ const AdvancedSearchPage = () => {
       </div>
     </div>
   )
-}
+}  
 
 export default AdvancedSearchPage
