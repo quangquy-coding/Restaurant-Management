@@ -185,17 +185,17 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
   {featuredDishes.map((dish) => (
-    <div key={dish.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-    <img src={dish.image} className="w-full aspect-[4/3] object-cover" />
-      <div className="p-4">
+    <div key={dish.id} className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden h-full">
+      <img src={dish.image} className="w-full aspect-[4/3] object-cover" />
+      <div className="flex flex-col flex-grow p-4">
         <div className="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">
           {dish.category}
         </div>
         <h3 className="text-lg font-bold mb-2">{dish.name}</h3>
-        <p className="text-gray-600 text-sm mb-4">{dish.description}</p>
-        <div className="flex justify-between items-center">
+        <p className="text-gray-600 text-sm mb-4 flex-grow">{dish.description}</p>
+        <div className="flex justify-between items-center mt-auto">
           <span className="font-bold text-lg">{dish.price.toLocaleString("vi-VN")} ₫</span>
           <button
             onClick={() => addToCart(dish)}
@@ -208,6 +208,7 @@ const HomePage = () => {
     </div>
   ))}
 </div>
+
 
           <div className="text-center mt-10">
             <Link

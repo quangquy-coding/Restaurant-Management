@@ -92,7 +92,7 @@ const Footer = () => {
                   to="/blog"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Blog Ẩm Thực
+                  Blog 
                 </Link>
               </li>
             </ul>

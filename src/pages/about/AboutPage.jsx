@@ -4,6 +4,7 @@ import Phong from '../../assets/phong.jpg'
 import Owner from '../../assets/owner.jpg'
 import Logo from '../../assets/logo.png'
 import Quy from '../../assets/quy.jpg'
+import Tan from '../../assets/tan.jpeg'
 
 const AboutPage = () => {
   return (
@@ -63,26 +64,27 @@ const AboutPage = () => {
 
           <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 mb-10">
             <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Đội ngũ của chúng tôi</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="text-center">
+                <img
+                  src={Owner}
+                  alt="Quản lý Nguyễn Quang Quý"
+                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="font-bold">Quang Quý</h3>
+                <p className="text-gray-600">Quản lý nhà hàng</p>
+              </div>
               <div className="text-center">
                 <img
                   src={Phong}
                   alt="Đầu bếp Nguyễn Đăng Phong"
                   className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="font-bold">Nguyễn Đăng Phong</h3>
+                <h3 className="font-bold">Đăng Phong</h3>
                 <p className="text-gray-600">Bếp trưởng</p>
               </div>
 
-              <div className="text-center">
-                <img
-                  src={Owner}
-                  alt="Quản lý Nguyễn Quang Quý"
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="font-bold">Nguyễn Quang Quý</h3>
-                <p className="text-gray-600">Quản lý nhà hàng</p>
-              </div>
+             
 
               <div className="text-center">
                 <img
@@ -90,8 +92,17 @@ const AboutPage = () => {
                   alt="Đầu bếp Nguyễn Trí Ngọc"
                   className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="font-bold">Nguyễn Trí Ngọc</h3>
+                <h3 className="font-bold">Trí Ngọc</h3>
                 <p className="text-gray-600">Bếp phó</p>
+              </div>
+              <div className="text-center">
+                <img
+                  src={Tan}
+                  alt="Đầu bếp Quang Tân"
+                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="font-bold">Quang Tân</h3>
+                <p className="text-gray-600">Chủ tịch</p>
               </div>
             </div>
           </div>
