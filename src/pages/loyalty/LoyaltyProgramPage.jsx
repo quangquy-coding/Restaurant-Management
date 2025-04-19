@@ -725,4 +725,4 @@ const LoyaltyProgramPage = () => {
   )
 }
 
-export default LoyaltyProgramPage
+export default LoyaltyProgramPage;

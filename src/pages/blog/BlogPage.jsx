@@ -77,7 +77,7 @@ const BlogPage = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-16">
-        <div className="flex justify-center items-center h-64">
+        <div className="flex justify-center items-center h-64 sm:h-80">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       </div>
@@ -121,20 +121,20 @@ const BlogPage = () => {
       </div>
 
       {/* Blog Posts */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 gap-6 sm:gap-8">
         {filteredPosts.map((post) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300"
+            className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition-shadow duration-300"
           >
             <Link to={`/blog/${post.id}`}>
               <img
                 src={post.image || "/placeholder.svg"}
                 alt={post.title}
-                className="w-full h-48 sm:h-56 md:h-64 object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full h-40 sm:h-52 md:h-64 object-cover rounded-t-2xl hover:scale-105 transition-transform duration-300"
               />
             </Link>
             <div className="p-5 sm:p-6">
@@ -170,11 +170,11 @@ const BlogPage = () => {
           <p className="text-gray-600 mb-6">
             Nhận thông báo về các bài viết mới và ưu đãi đặc biệt từ nhà hàng chúng tôi.
           </p>
-          <form className="flex flex-col sm:flex-row gap-4 sm:gap-2">
+          <form className="flex flex-col sm:flex-row gap-4 sm:gap-2 px-2">
             <input
               type="email"
               placeholder="Địa chỉ email của bạn"
-              className="flex-grow px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
             <button

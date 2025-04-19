@@ -1,23 +1,29 @@
 import React from "react"
-import { useSidebar } from "../../hooks/useSidebar"
 import SidebarHeader from "./SidebarHeader"
-import SidebarMenu from "./SidebarMenu"
 import SidebarFooter from "./SidebarFooter"
+import SidebarMenu from "./SidebarMenu"
+import { useSidebar } from "../../hooks/useSidebar"
 
 const Sidebar = () => {
-  const { isOpen, isMobile, toggleSidebar } = useSidebar()
+  const { isOpen, isMobile } = useSidebar()
 
   return (
     <>
-      {/* Mobile overlay */}
-      {isMobile && isOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-20" onClick={toggleSidebar}></div>}
+      {/* Overlay trên mobile */}
+      {isMobile && isOpen && (
+        <div className="fixed inset-0 bg-black opacity-40 z-40" onClick={() => toggleSidebar()} />
+      )}
 
-      {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-30 h-screen transition-all duration-300 ease-in-out 
-          ${isOpen ? "w-64" : "w-20"} 
-          ${isMobile && !isOpen ? "-translate-x-full" : "translate-x-0"} 
-          bg-white border-r border-gray-200 shadow-lg`}
+        className={`fixed top-0 left-0 h-full bg-white shadow-md z-40 transition-all duration-300 ${
+    isMobile
+      ? isOpen
+        ? "w-64"
+        : "w-0"
+      : isOpen
+      ? "w-64"
+      : "w-20"
+  }`}
       >
         <div className="flex flex-col h-full">
           <SidebarHeader />

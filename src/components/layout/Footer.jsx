@@ -60,7 +60,7 @@ const Footer = () => {
                   to="/menu"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                 Danh sách 
+                 Thực đơn
                 </Link>
               </li>
               <li>

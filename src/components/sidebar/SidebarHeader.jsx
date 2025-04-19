@@ -7,6 +7,7 @@ const SidebarHeader = () => {
   const { isOpen, toggleSidebar } = useSidebar()
 
   return (
+    
     <div className="flex items-center justify-between p-4 border-b border-gray-200">
       {isOpen && (
         <Link to="/admin" className="text-xl font-bold text-blue-600">

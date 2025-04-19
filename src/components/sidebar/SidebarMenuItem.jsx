@@ -1,5 +1,4 @@
 import React from "react"
-
 import { NavLink } from "react-router-dom"
 import { useSidebar } from "../../hooks/useSidebar"
 
@@ -17,7 +16,12 @@ const SidebarMenuItem = ({ icon, title, to, onClick }) => {
       }
     >
       <div className="flex-shrink-0">{icon}</div>
-      {isOpen && <span className="ml-3 transition-opacity duration-200">{title}</span>}
+      {isOpen && (
+        <span className="ml-3 transition-opacity duration-200 opacity-100">{title}</span>
+      )}
+      {!isOpen && (
+        <span className="ml-3 opacity-0 transition-opacity duration-200">{title}</span>
+      )}
     </NavLink>
   )
 }
