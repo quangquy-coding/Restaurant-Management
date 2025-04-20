@@ -19,6 +19,7 @@ const SidebarFooter = () => {
         onClick={handleLogout}
         className="flex items-center w-full py-2 px-4 text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
       >
+      
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

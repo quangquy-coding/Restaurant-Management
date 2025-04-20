@@ -1,5 +1,6 @@
 import React from "react"
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { useState, useEffect } from "react"
 import {
   Search,
@@ -298,14 +299,42 @@ const CategoriesManagementPage = () => {
     }
   }
 
+  const handleExportExcel = () => {
+    const exportData = categories.map((e, index) => ({
+      STT: index + 1,
+      "Hình ảnh" : e.image,
+      "Danh mục": e.name,
+      "Mô tả": e.description,
+      "Số món": e.dishCount,
+   
+      "Trạng thái": e.status,
+      "Ngày tạo": e.createdAt,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachNguoiDung");
+  
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+  
+    const file = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+  
+    saveAs(file, "DanhMucMonAn.xlsx");
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Quản lý danh mục món ăn</h1>
+        <h1 className="text-base font-bold">Quản lý danh mục món ăn</h1>
 
         <button
           onClick={() => setIsAddCategoryModalOpen(true)}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              className="flex items-center px-3 py-1.5 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700"
         >
           <Plus className="w-4 h-4 mr-2" />
           Thêm danh mục
@@ -342,7 +371,7 @@ const CategoriesManagementPage = () => {
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
 
-            <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50">
+            <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50" onClick={handleExportExcel}>
               <Download className="w-4 h-4 mr-2" />
               Xuất Excel
             </button>

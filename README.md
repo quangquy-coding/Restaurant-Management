@@ -22,3 +22,4 @@ npm install react-hot-toast
 
 npm install framer-motion# -restaurant-management
 npm install react-icons
+npm install xlsx file-saver

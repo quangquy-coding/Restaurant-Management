@@ -1,5 +1,6 @@
 import React from "react"
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { useState, useEffect } from "react"
 import { Search, Plus, Edit, Trash2, Eye, Upload } from "lucide-react"
 
@@ -219,13 +220,48 @@ const DishesPage = () => {
     setIsDeleteModalOpen(true)
   }
 
+    const handleExportExcel = () => {
+      const exportData = dishes.map((e, index) => ({
+        STT: index + 1,
+        "Hình ảnh" : e.image,
+
+        "Tên món ăn": e.name,
+        
+        "Mô tả": e.description,
+        "Danh mục": e.name,
+      
+        "Giá": e.price.toLocaleString("vi-VN"),
+        "Trạng thái": e.status,
+       
+       
+     
+   
+     
+      }));
+    
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachMonAn");
+    
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+    
+      const file = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+    
+      saveAs(file, "DanhMucMonAn.xlsx");
+    };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Quản lý món ăn</h1>
+        <h1 className="text-xl font-bold">Quản lý món ăn</h1>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
+          className="flex items-center px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
         >
           <Plus className="mr-2 h-5 w-5" />
           Thêm món ăn
@@ -259,7 +295,10 @@ const DishesPage = () => {
                 </option>
               ))}
             </select>
+            
           </div>
+          
+          
         </div>
       </div>
 

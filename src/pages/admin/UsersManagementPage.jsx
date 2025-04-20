@@ -1,5 +1,6 @@
 import React from "react"
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 import { useState, useEffect } from "react"
 import {
@@ -150,14 +151,81 @@ const UsersManagementPage = () => {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [userToDelete, setUserToDelete] = useState(null)
+
+  const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const handleUpdateUser = (e) => {
+    e.preventDefault();
+  
+    const validateForm = (formData) => {
+      const { name, email, phone, role, password } = formData;
+      if (!name || !email || !role || !phone) {
+        return { isValid: false, message: 'Vui lòng điền đầy đủ thông tin.' };
+      }
+  
+      // Kiểm tra định dạng email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return { isValid: false, message: 'Email không hợp lệ.' };
+      }
+  
+      // Kiểm tra mật khẩu nếu có thay đổi và có yêu cầu cho mật khẩu mới
+      if ((role === 'Nhân viên' || role === 'Quản trị viên') && password && password.length < 6) {
+        return { isValid: false, message: 'Mật khẩu phải có ít nhất 6 ký tự.' };
+      }
+  
+      return { isValid: true };
+    };
+  
+    // Xác thực form
+    const validation = validateForm(editingUser);
+    if (!validation.isValid) {
+      setFormErrors({ message: validation.message });
+      return;
+    }
+  
+    // Cập nhật thông tin người dùng (bao gồm mật khẩu nếu có)
+    if (editingUser.role === 'Nhân viên' || editingUser.role === 'Quản trị viên') {
+      // Chỉ cập nhật mật khẩu nếu có thay đổi
+      if (editingUser.password) {
+        // Xử lý thay đổi mật khẩu (ví dụ: gọi API cập nhật mật khẩu)
+        console.log('Đổi mật khẩu mới: ', editingUser.password);
+      }
+    }
+  
+    // Cập nhật người dùng trong danh sách
+    setUsers((prev) =>
+      prev.map((u) => (u.id === editingUser.id ? { ...u, ...editingUser } : u))
+    );
+  
+    // Đóng modal và reset trạng thái
+    setIsEditUserModalOpen(false);
+    setEditingUser(null);
+    setFormErrors({});
+  };
+  
+  // Hàm thay đổi giá trị trong form
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditingUser((prev) => ({ ...prev, [name]: value }));
+  };
+  
+  // Mở modal để chỉnh sửa người dùng
+  const handleEditUser = (user) => {
+    setEditingUser(user);
+    setIsEditUserModalOpen(true);
+  };
+  
+
   const [sortConfig, setSortConfig] = useState({
     key: "id",
     direction: "asc",
   })
 
   const usersPerPage = 5
-  const statusOptions = ["Tất cả", "Hoạt động", "Không hoạt động", "Bị chặn"]
-  const roleOptions = ["Tất cả", "Khách hàng", "Nhân viên", "Quản trị viên"]
+  const statusOptions = ["Tất cả vai trò", "Hoạt động", "Không hoạt động", "Bị chặn"]
+  const roleOptions = ["Tất cả trạng thái", "Khách hàng", "Nhân viên", "Quản trị viên"]
 
   // New user form state
   const [newUser, setNewUser] = useState({
@@ -347,15 +415,40 @@ const UsersManagementPage = () => {
       setCurrentPage(pageNumber)
     }
   }
+  const handleExportExcel = () => {
+    const exportData = users.map((user, index) => ({
+      STT: index + 1,
+      "Họ và tên": user.name,
+      Email: user.email,
+      "Số điện thoại": user.phone,
+      "Vai trò": user.role,
+      "Trạng thái": user.status,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachNguoiDung");
+  
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+  
+    const file = new Blob([excelBuffer], {
+      type: "application/octet-stream",
+    });
+  
+    saveAs(file, "DanhSachNguoiDung.xlsx");
+  };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
+        <h1 className="text-sl font-bold">Quản lý người dùng</h1>
 
         <button
           onClick={() => setIsAddUserModalOpen(true)}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+       className="flex items-center px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
         >
           <UserPlus className="w-4 h-4 mr-2" />
           Thêm người dùng
@@ -407,7 +500,7 @@ const UsersManagementPage = () => {
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             </div>
 
-            <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50">
+            <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50" onClick={handleExportExcel}>
               <Download className="w-4 h-4 mr-2" />
               Xuất Excel
             </button>
@@ -590,9 +683,10 @@ const UsersManagementPage = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.createdAt}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
-                        <Edit className="h-4 w-4" />
-                      </button>
+
+                    <button onClick={() => handleEditUser(user)} className="text-blue-600 hover:text-blue-900">
+  <Edit className="h-4 w-4" />
+</button>
                       <button onClick={() => handleDeleteUser(user)} className="text-red-600 hover:text-red-900">
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -834,6 +928,110 @@ const UsersManagementPage = () => {
           </div>
         </div>
       )}
+  
+{isEditUserModalOpen && editingUser && (
+  <div className="fixed inset-0 z-10 overflow-y-auto">
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div className="fixed inset-0 bg-black opacity-30" onClick={() => setIsEditUserModalOpen(false)}></div>
+      <div className="relative bg-white rounded-lg shadow-lg max-w-md w-full p-6 z-20">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-medium">Chỉnh sửa người dùng</h3>
+          <button onClick={() => setIsEditUserModalOpen(false)} className="text-gray-400 hover:text-gray-500">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <form onSubmit={handleUpdateUser}>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Họ và tên *</label>
+              <input
+                type="text"
+                name="name"
+                value={editingUser.name}
+                onChange={handleEditInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email *</label>
+              <input
+                type="email"
+                name="email"
+                value={editingUser.email}
+                onChange={handleEditInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Số điện thoại *</label>
+              <input
+                type="tel"
+                name="phone"
+                value={editingUser.phone}
+                onChange={handleEditInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Vai trò</label>
+              <select
+                name="role"
+                value={editingUser.role}
+                onChange={handleEditInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              >
+                <option value="Khách hàng">Khách hàng</option>
+                <option value="Nhân viên">Nhân viên</option>
+                <option value="Quản trị viên">Quản trị viên</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Trạng thái</label>
+              <select
+                name="status"
+                value={editingUser.status}
+                onChange={handleEditInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              >
+                <option value="Hoạt động">Hoạt động</option>
+                <option value="Không hoạt động">Không hoạt động</option>
+                <option value="Bị chặn">Bị chặn</option>
+              </select>
+            </div>
+
+            {/* Chỉ hiển thị trường mật khẩu nếu vai trò là "Nhân viên" hoặc "Quản trị viên" */}
+            {(editingUser.role === 'Nhân viên' || editingUser.role === 'Quản trị viên') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Mật khẩu mới</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={editingUser.password || ''}
+                  onChange={handleEditInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 flex justify-end">
+            <button
+              type="submit"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
+            >
+              Lưu thay đổi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
