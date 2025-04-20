@@ -423,6 +423,8 @@ const UsersManagementPage = () => {
       "Số điện thoại": user.phone,
       "Vai trò": user.role,
       "Trạng thái": user.status,
+      "Đơn hàng": user.orders,
+      "Ngày tạo": user.createdAt,
     }));
   
     const worksheet = XLSX.utils.json_to_sheet(exportData);

@@ -10,7 +10,7 @@ import {
   LogOut,
   Newspaper,
   User,
-  Settings
+  Settings,Trophy 
 } from "lucide-react"
 import Logo from "../../assets/logo.png"
 
@@ -170,6 +170,15 @@ const Header = () => {
                         >
                           <Settings className="h-4 w-4" />
                           Quản lý tài khoản
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/loyalty-program"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                        >
+                          <Trophy  className="h-4 w-4" />
+                        Ưu đãi
                         </Link>
                       </li>
                       <li>

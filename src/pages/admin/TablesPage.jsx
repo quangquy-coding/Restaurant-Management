@@ -1,7 +1,8 @@
 import React from "react"
-
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import { useState, useEffect } from "react"
-import { Plus, Edit, Trash2, Search, Users, CheckCircle, XCircle, Clock } from "lucide-react"
+import { Plus, Edit, Trash2, Search, Users, CheckCircle, XCircle, Clock,Download} from "lucide-react"
 
 // Mock data for tables
 const mockTables = [
@@ -198,6 +199,32 @@ const TablesPage = () => {
     setIsDeleteModalOpen(true)
   }
 
+   const handleExportExcel = () => {
+      const exportData = tables.map((table, index) => ({
+        STT: index + 1,
+        "Tên bàn": table.name,
+        "Vị trí": table.location,
+        "Sức chứa": table.capacity + " người",
+        "Trạng thái": table.status === "available" ? "Trống" : table.status === "occupied" ? "Đang sử dụng" : "Đã đặt trước",
+        "Mô tả": table.description,
+      
+      }));
+    
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachBan");
+    
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+    
+      const file = new Blob([excelBuffer], {
+        type: "application/octet-stream",
+      });
+    
+      saveAs(file, "DanhSachBan.xlsx");
+    };
   const getStatusBadge = (status) => {
     switch (status) {
       case "available":
@@ -280,6 +307,10 @@ const TablesPage = () => {
               <option value="reserved">Đã đặt trước</option>
             </select>
           </div>
+                <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50" onClick={handleExportExcel}>
+            <Download className="w-4 h-4 mr-2" />
+            Xuất Excel
+          </button>
         </div>
       </div>
 

@@ -1,7 +1,9 @@
 
 import React from "react"
 import { useState, useEffect } from "react"
-import { Search, Eye, CheckCircle, Clock, XCircle, Calendar, User, CreditCard, Printer } from "lucide-react"
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { Search, Eye, CheckCircle, Clock, XCircle, Calendar, User, CreditCard, Printer,Download } from "lucide-react"
 
 // Mock data for orders
 const mockOrders = [
@@ -214,6 +216,33 @@ const OrdersPage = () => {
       setCurrentOrder({ ...currentOrder, status: newStatus })
     }
   }
+  const handleExportExcel = () => {
+        const exportData = orders.map((order, index) => ({
+          STT: index + 1,
+          "Mã đơn hàng": order.id,
+          "Khách hàng": order.customerName,
+          "Bàn": order.tableNumber,
+          "Thời gian": formatDate(order.orderDate),
+          "Trạng thái": order.status === "completed" ? "Hoàn thành" : order.status === "pending" ? "Chờ xử lý" : order.status === "processing" ? "Đang xử lý" : "Đã hủy",
+          "Tổng tiền": order.total.toLocaleString("vi-VN") + " ₫",
+        
+        }));
+      
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "DanhSachDonHang");
+      
+        const excelBuffer = XLSX.write(workbook, {
+          bookType: "xlsx",
+          type: "array",
+        });
+      
+        const file = new Blob([excelBuffer], {
+          type: "application/octet-stream",
+        });
+      
+        saveAs(file, "DanhSachDonHang.xlsx");
+      };
 
   return (
     <div className="p-6">
@@ -262,6 +291,10 @@ const OrdersPage = () => {
               <option value="month">30 ngày qua</option>
             </select>
           </div>
+          <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50" onClick={handleExportExcel}>
+            <Download className="w-4 h-4 mr-2" />
+            Xuất Excel
+          </button>
         </div>
       </div>
 

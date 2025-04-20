@@ -1,7 +1,7 @@
 import React from "react"
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { useState, useEffect } from "react"
+import { useState, useEffect,useRef } from "react"
 import {
   Search,
   Plus,
@@ -103,6 +103,25 @@ const CategoriesManagementPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [categoryToDelete, setCategoryToDelete] = useState(null)
   const [categoryToEdit, setCategoryToEdit] = useState(null)
+  
+  
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null); // Tạo ref để tham chiếu đến input file
+
+  const handleNewCategoryImageChange = (e) => {
+    const file = e.target.files[0];  // Lấy file ảnh được chọn
+    if (file) {
+      setNewCategory((prev) => ({
+        ...prev,
+        image: URL.createObjectURL(file), // Tạo URL cho file ảnh đã chọn
+      }));
+    }
+  }
+
+  const handleChangeClick = () => {
+    // Khi bấm nút "Chọn ảnh" hoặc "Sửa ảnh", sẽ tự động mở input file
+    fileInputRef.current.click();
+  };
   const [sortConfig, setSortConfig] = useState({
     key: "id",
     direction: "asc",
@@ -213,19 +232,19 @@ const CategoriesManagementPage = () => {
   }
 
   const handleAddCategory = (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     // Validate form
-    const errors = {}
-    if (!newCategory.name.trim()) errors.name = "Tên danh mục không được để trống"
-
+    const errors = {};
+    if (!newCategory.name.trim()) errors.name = "Tên danh mục không được để trống";
+  
     if (Object.keys(errors).length > 0) {
-      setFormErrors(errors)
-      return
+      setFormErrors(errors);
+      return;
     }
-
+  
     if (isEditCategoryModalOpen) {
-      // Update existing category
+      // Cập nhật danh mục đã có
       const updatedCategories = categories.map((category) => {
         if (category.id === categoryToEdit.id) {
           return {
@@ -233,16 +252,17 @@ const CategoriesManagementPage = () => {
             name: newCategory.name,
             description: newCategory.description,
             status: newCategory.status,
-          }
+            image: newCategory.image || category.image,  // Cập nhật ảnh mới nếu có
+          };
         }
-        return category
-      })
-
-      setCategories(updatedCategories)
-      setIsEditCategoryModalOpen(false)
+        return category;
+      });
+  
+      setCategories(updatedCategories);
+      setIsEditCategoryModalOpen(false);
     } else {
-      // Add new category
-      const newCategoryId = Math.max(...categories.map((category) => category.id)) + 1
+      // Thêm danh mục mới
+      const newCategoryId = Math.max(...categories.map((category) => category.id)) + 1;
       const categoryToAdd = {
         id: newCategoryId,
         name: newCategory.name,
@@ -250,22 +270,36 @@ const CategoriesManagementPage = () => {
         status: newCategory.status,
         dishCount: 0,
         createdAt: new Date().toISOString().split("T")[0],
-        image: "/placeholder.svg?height=40&width=40",
-      }
-
-      setCategories([...categories, categoryToAdd])
-      setIsAddCategoryModalOpen(false)
+        image: newCategory.image || "/placeholder.svg",  // Sử dụng ảnh đã chọn nếu có
+      };
+  
+      setCategories([...categories, categoryToAdd]);
+      setIsAddCategoryModalOpen(false);
     }
-
+  
     // Reset form
     setNewCategory({
       name: "",
       description: "",
       status: "Hoạt động",
       image: null,
-    })
-    setFormErrors({})
+    });
+    setFormErrors({});
   }
+  
+  
+  // Hàm để xử lý khi chọn ảnh
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Tạo URL tạm thời cho ảnh
+      setNewCategory((prevCategory) => ({
+        ...prevCategory,
+        image: imageUrl, // Cập nhật ảnh trong state
+      }));
+    }
+  };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -699,31 +733,46 @@ const CategoriesManagementPage = () => {
                   </div>
 
                   <div>
-                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-                      Hình ảnh
-                    </label>
-                    <div className="mt-1 flex items-center">
-                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        {isEditCategoryModalOpen && categoryToEdit ? (
-                          <img
-                            src={categoryToEdit.image || "/placeholder.svg"}
-                            alt="Category"
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                          </svg>
-                        )}
-                      </span>
-                      <button
-                        type="button"
-                        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      >
-                        Thay đổi
-                      </button>
-                    </div>
-                  </div>
+      <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+        Hình ảnh
+      </label>
+      <div className="mt-1 flex items-center">
+        <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+          {isEditCategoryModalOpen && categoryToEdit ? (
+            <img
+              src={categoryToEdit.image || "/placeholder.svg"}
+              alt="Category"
+              className="h-full w-full object-cover"
+            />
+          ) : newCategory.image ? (
+            <img
+              src={newCategory.image} // Hiển thị ảnh đã chọn
+              alt="Selected Category"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          )}
+        </span>
+        <button
+          type="button"
+          className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          onClick={handleChangeClick} // Khi bấm vào "Chọn ảnh" hoặc "Sửa ảnh", sẽ mở input file
+        >
+          {isEditCategoryModalOpen ? "Sửa ảnh" : "Chọn ảnh"} {/* Điều chỉnh văn bản của nút */}
+        </button>
+        <input
+          type="file"
+          id="image"
+          ref={fileInputRef} // Kết nối với ref
+          className="hidden"
+          onChange={handleImageChange} // Gọi hàm khi người dùng chọn ảnh
+        />
+      </div>
+    </div>
+
                 </div>
 
                 <div className="mt-6 flex justify-end space-x-3">

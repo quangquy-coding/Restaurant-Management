@@ -2,7 +2,7 @@ import React from "react"
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { useState, useEffect } from "react"
-import { Search, Plus, Edit, Trash2, Eye, Upload } from "lucide-react"
+import { Search, Plus, Edit, Trash2, Eye, Upload,Download } from "lucide-react"
 
 // Mock data for dishes
 const mockDishes = [
@@ -229,9 +229,16 @@ const DishesPage = () => {
         
         "Mô tả": e.description,
         "Danh mục": e.name,
-      
-        "Giá": e.price.toLocaleString("vi-VN"),
-        "Trạng thái": e.status,
+        
+        "Giá": e.price.toLocaleString("vi-VN") + " ₫",
+        "Trạng thái": [
+        e.isAvailable ? "Còn hàng" : "Hết hàng",
+        e.isNew ? " Mới" : null,
+        e.isSpecial ? "Đặc biệt" : null
+        ]
+        .filter(Boolean) // loại bỏ null
+        .join(" - ") 
+       
        
        
      
@@ -252,8 +259,36 @@ const DishesPage = () => {
         type: "application/octet-stream",
       });
     
-      saveAs(file, "DanhMucMonAn.xlsx");
+      saveAs(file, "DanhSachMonAn.xlsx");
     };
+    const handleNewDishImageUpload = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setNewDish((prev) => ({
+            ...prev,
+            image: reader.result,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    const handleEditDishImageUpload = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setCurrentDish((prev) => ({
+            ...prev,
+            image: reader.result,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    
+    
 
   return (
     <div className="p-6">
@@ -295,11 +330,16 @@ const DishesPage = () => {
                 </option>
               ))}
             </select>
+
+
             
           </div>
           
-          
-        </div>
+          <button className="flex items-center px-4 py-2 text-gray-700 bg-white border rounded-lg hover:bg-gray-50" onClick={handleExportExcel}>
+          <Download className="w-4 h-4 mr-2" />
+          Xuất Excel
+          </button>
+          </div>
       </div>
 
       {/* Dishes table */}
@@ -461,18 +501,27 @@ const DishesPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Hình ảnh</label>
+                  <label className="cursor-pointer inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+  Chọn ảnh
                   <div className="flex items-center">
-                    <input
-                      type="text"
-                      name="image"
-                      value={newDish.image}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-                    <button className="ml-2 p-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                      <Upload className="h-5 w-5" />
-                    </button>
+                  <input
+  type="file"
+  accept="image/*"
+  onChange={handleNewDishImageUpload}
+  className="hidden"
+/>
+
+                    
+                    
                   </div>
+                  </label>
+                  {newDish.image && (
+  <img
+    src={newDish.image}
+    alt="Preview"
+    className="w-24 h-24 mt-2 object-cover rounded-md"
+  />
+)}
                 </div>
 
                 <div className="md:col-span-2">
@@ -616,17 +665,24 @@ const DishesPage = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Hình ảnh</label>
                   <div className="flex items-center">
-                    <input
-                      type="text"
-                      name="image"
-                      value={currentDish.image}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    />
-                    <button className="ml-2 p-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                      <Upload className="h-5 w-5" />
-                    </button>
+                  <label className="cursor-pointer inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                  Sửa ảnh
+                  <input
+  type="file"
+  accept="image/*"
+  onChange={handleEditDishImageUpload}
+  className="hidden"
+/>
+
+</label>
                   </div>
+                  {currentDish?.image && (
+  <img
+    src={currentDish.image}
+    alt="Preview"
+    className="w-24 h-24 mt-2 object-cover rounded-md"
+  />
+)}
                 </div>
 
                 <div className="md:col-span-2">

@@ -148,6 +148,66 @@ const SidebarMenu = () => {
       ),
       to: "/admin/reports",
     },
+    {
+    title: "Analysis",
+    icon: (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M11 5a7 7 0 107 7 7 7 0 00-7-7zm0 0v4m4.293 4.293l4.414 4.414"
+    />
+     </svg>
+      ),
+      to: "/admin/customer-analytics",
+    },
+    {
+      title: "Promotion",
+     icon: (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M7 7h.01M3 11.5V5a2 2 0 012-2h6.5a1 1 0 01.7.3l7.5 7.5a1 1 0 010 1.4l-6.5 6.5a1 1 0 01-1.4 0l-7.5-7.5a1 1 0 01-.3-.7z"
+    />
+  </svg>
+        ),
+        to: "/admin/promotions",
+      },
+      {
+        title: "Review",
+    icon: (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.1 6.475h6.816c.969 0 1.371 1.24.588 1.81l-5.507 4.004 2.1 6.475c.3.921-.755 1.688-1.538 1.118L12 17.75l-5.51 4.059c-.783.57-1.838-.197-1.538-1.118l2.1-6.475-5.507-4.004c-.783-.57-.38-1.81.588-1.81h6.816l2.1-6.475z"
+    />
+  </svg>
+          ),
+          to: "/admin/reviews",
+        },
   ]
 
   return (
