@@ -11,6 +11,7 @@ import {
   Newspaper,
   User,
   Settings,Trophy 
+  ,History 
 } from "lucide-react"
 import Logo from "../../assets/logo.png"
 
@@ -170,6 +171,15 @@ const Header = () => {
                         >
                           <Settings className="h-4 w-4" />
                           Quản lý tài khoản
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/orders"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                        >
+                          <History  className="h-4 w-4" />
+                          Lịch sử đơn hàng
                         </Link>
                       </li>
                       <li>

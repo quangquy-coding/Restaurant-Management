@@ -2,9 +2,12 @@
 import { useSidebar } from "../../hooks/useSidebar"
 import React from "react"
 import SidebarMenuItem from "./SidebarMenuItem"
+import { useLocation } from "react-router-dom" 
+
 
 const SidebarMenu = () => {
   const { isMobile, toggleSidebar } = useSidebar()
+  const location = useLocation() // Get current location
 
   const handleItemClick = () => {
     if (isMobile) {
@@ -215,7 +218,13 @@ const SidebarMenu = () => {
       <ul className="space-y-2">
         {menuItems.map((item) => (
           <li key={item.to}>
-            <SidebarMenuItem title={item.title} icon={item.icon} to={item.to} onClick={handleItemClick} />
+            <SidebarMenuItem
+              title={item.title}
+              icon={item.icon}
+              to={item.to}
+              onClick={handleItemClick}
+              isActive={location.pathname.startsWith(item.to)} // Kiểm tra nếu đường dẫn bắt đầu với item.to
+            />
           </li>
         ))}
       </ul>

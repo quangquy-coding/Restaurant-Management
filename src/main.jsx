@@ -15,7 +15,7 @@ import CheckoutPage from "./components/cart/CheckoutPage"
 import AboutPage from "./pages/about/AboutPage"
 import ContactPage from "./pages/contact/ContactPage"
 import ProfilePage from "./pages/user/ProfilePage"
-// import UserOrdersPage from "./pages/user/OrdersPage"
+import UserOrdersPage from "./pages/user/OrdersPage"
 import LoginPage from "./pages/login"
 import RegisterPage from "./pages/register"
 
@@ -38,7 +38,7 @@ import UsersManagementPage from "./pages/admin/UsersManagementPage"
 import CategoriesManagementPage from "./pages/admin/CategoriesManagementPage"
 
 
-import OrderDetailPage from './pages/order/OrderDetailPage'
+// import OrderDetailPage from './pages/order/OrderDetailPage'
 import OrderPage from './pages/order/OrderPage'
 import ReviewPage from './pages/review/ReviewPage'
 
@@ -75,10 +75,10 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
      
-      {
-        path: "order",
-        element: <OrderPage />,
-      },
+      // {
+      //   path: "order",
+      //   element: <OrderPage />,
+      // },
       // {
       //   path: "order",
       //   element: <OrderPage />,
@@ -87,10 +87,10 @@ const router = createBrowserRouter([
         path: "review",
         element: <ReviewPage />,
       },
-      {
-        path: "order/:id",
-        element: <OrderDetailPage />,
-      },
+      // {
+      //   path: "order/:id",
+      //   element: <OrderDetailPage />,
+      // },
       
       {
         path: "cart",
@@ -131,10 +131,10 @@ const router = createBrowserRouter([
         element: <AccountSettingsPage />,
       },
       
-      // {
-      //   path: "orders",
-      //   element: <UserOrdersPage />,
-      // },
+      {
+        path: "orders",
+        element: <UserOrdersPage />,
+      },
       {
         path: "login",
         element: <LoginPage />,

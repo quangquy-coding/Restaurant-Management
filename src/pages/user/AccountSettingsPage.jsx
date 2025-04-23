@@ -5,6 +5,38 @@ import { Save, User, Lock, Bell, CreditCard, MapPin, AlertCircle } from "lucide-
 
 const AccountSettingsPage = () => {
   const [activeTab, setActiveTab] = useState("profile")
+
+  const Profile = () => {
+    // State để lưu thông tin cá nhân
+    const [userInfo, setUserInfo] = useState({
+      name: 'Nguyễn Văn A',
+      email: 'nguyenvana@example.com',
+      phone: '0123456789',
+    });
+  
+    // State để lưu trạng thái chỉnh sửa (có thể đang chỉnh sửa hay không)
+    const [isEditing, setIsEditing] = useState(false);
+  
+    // Hàm xử lý thay đổi giá trị trong form
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setUserInfo({
+        ...userInfo,
+        [name]: value,
+      });
+    };
+  
+    // Hàm để bật/tắt chế độ chỉnh sửa
+    const toggleEdit = () => {
+      setIsEditing(!isEditing);
+    };
+  
+    // Hàm xử lý khi người dùng lưu thông tin (có thể gọi API ở đây để lưu vào database)
+    const saveInfo = () => {
+      console.log('Thông tin đã được lưu:', userInfo);
+      toggleEdit(); // Tắt chế độ chỉnh sửa
+    };
+  }
   const [formData, setFormData] = useState({
     // Profile
     fullName: "Nguyễn Văn A",
