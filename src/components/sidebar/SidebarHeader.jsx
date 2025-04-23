@@ -11,9 +11,10 @@ const SidebarHeader = () => {
     <div className="flex items-center justify-between p-4 border-b border-gray-200">
       {isOpen && (
         <Link to="/admin" className="text-xl font-bold text-blue-600">
-          Restaurant Admin
+        TRANG QUẢN TRỊ
         </Link>
       )}
+      
       <button onClick={toggleSidebar} className="p-1 rounded-md hover:bg-gray-100 focus:outline-none">
         {isOpen ? (
           <svg

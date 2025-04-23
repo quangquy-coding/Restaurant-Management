@@ -1,9 +1,17 @@
 import React from "react"
-
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { useState, useEffect } from "react"
 import { Calendar, Download, ChevronDown, ArrowUp, ArrowDown } from "lucide-react"
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 // Mock data for reports
+const data = [
+  { month: 'Th1', revenue: 12000000 },
+  { month: 'Th2', revenue: 15000000 },
+  { month: 'Th3', revenue: 9000000 },
+  // ...
+];
 const mockRevenueData = {
   daily: [
     { date: "2023-05-01", revenue: 5250000, orders: 42, averageOrder: 125000 },
@@ -54,12 +62,39 @@ const mockPaymentMethodData = [
   { method: "Ví điện tử", revenue: 40000000, percentage: 20 },
 ]
 
+
+
 const ReportsPage = () => {
   const [timeRange, setTimeRange] = useState("7days")
   const [revenueData, setRevenueData] = useState([])
   const [topDishes, setTopDishes] = useState([])
   const [categoryData, setCategoryData] = useState([])
   const [paymentMethodData, setPaymentMethodData] = useState([])
+
+  const [dishes, setDishes] = useState([]);
+  const [sortBy, setSortBy] = useState('sold');
+  const [sortedDishes, setSortedDishes] = useState([]);
+  useEffect(() => {
+    // Giả sử bạn lấy dữ liệu từ API hoặc từ một nguồn nào đó
+    const fetchedDishes = [
+      { id: 1, name: 'Phở', sold: 150, revenue: 300000 },
+      { id: 2, name: 'Bún Chả', sold: 120, revenue: 240000 },
+      { id: 3, name: 'Gà Rán', sold: 200, revenue: 400000 },
+    ];
+    setDishes(fetchedDishes);
+  }, []);
+  useEffect(() => {
+    let sorted = [...dishes];
+    if (sortBy === 'sold') {
+      sorted.sort((a, b) => b.sold - a.sold);
+    } else if (sortBy === 'revenue') {
+      sorted.sort((a, b) => b.revenue - a.revenue);
+    }
+    setSortedDishes(sorted);
+  }, [sortBy, dishes]);
+
+  
+  
   const [sortConfig, setSortConfig] = useState({
     key: "quantity",
     direction: "desc",
@@ -233,7 +268,7 @@ const ReportsPage = () => {
         <h2 className="text-lg font-semibold mb-4">Biểu đồ doanh thu</h2>
         <div className="h-80 w-full">
           {/* In a real app, you would use a chart library like Chart.js or Recharts */}
-          <div className="h-full w-full flex items-end justify-between">
+          {/* <div className="h-full w-full flex items-end justify-between">
             {revenueData.map((item, index) => {
               const height = (item.revenue / 8100000) * 100 // Scale to percentage of max value
               return (
@@ -243,14 +278,44 @@ const ReportsPage = () => {
                 </div>
               )
             })}
-          </div>
+          </div> */}
+
+          <ResponsiveContainer width="100%" height={300}>
+  <LineChart data={data}>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="month" />
+    <YAxis />
+    <Tooltip formatter={(value) => `${value.toLocaleString()} VNĐ`} />
+    <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={3} />
+  </LineChart>
+</ResponsiveContainer>
         </div>
+        
       </div>
 
       {/* Top dishes */}
       <div className="bg-white p-6 rounded-lg shadow mb-6">
         <h2 className="text-lg font-semibold mb-4">Món ăn bán chạy</h2>
+        <select
+          className="border px-2 py-1 rounded"
+          onChange={(e) => setSortBy(e.target.value)}
+          value={sortBy}
+        >
+          <option value="sold">Bán chạy</option>
+          <option value="revenue">Doanh thu</option>
+        </select>
+        <ul>
+        {sortedDishes.map((dish) => (
+          <li key={dish.id} className="flex justify-between py-2 border-b">
+            <span>{dish.name}</span>
+            <span>
+              {sortBy === 'sold' ? `${dish.sold} phần` : `${dish.revenue.toLocaleString()} VNĐ`}
+            </span>
+          </li>
+        ))}
+      </ul>
         <div className="overflow-x-auto">
+        
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -325,6 +390,7 @@ const ReportsPage = () => {
           </table>
         </div>
       </div>
+      
 
       {/* Category and payment method charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

@@ -14,7 +14,7 @@ const SidebarMenu = () => {
 
   const menuItems = [
     {
-      title: "Dashboard",
+      title: "Tổng quan",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const SidebarMenu = () => {
       to: "/admin",
     },
     {
-      title: "Users",
+      title: "Quản lý người dùng",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ const SidebarMenu = () => {
       to: "/admin/users",
     },
     {
-      title: "Categories",
+      title: "Quản lý danh mục",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ const SidebarMenu = () => {
       to: "/admin/categories",
     },
     {
-      title: "Dishes",
+      title: "Quản lý món ăn",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@ const SidebarMenu = () => {
       to: "/admin/dishes",
     },
     {
-      title: "Tables",
+      title: "Quản lý bàn",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +109,7 @@ const SidebarMenu = () => {
       to: "/admin/tables",
     },
     {
-      title: "Orders",
+      title: "Quản lý đơn hàng",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -126,10 +126,10 @@ const SidebarMenu = () => {
           />
         </svg>
       ),
-      to: "/admin/orders",
+      to: "/admin/staff",
     },
     {
-      title: "Reports",
+      title: "Báo cáo",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +149,7 @@ const SidebarMenu = () => {
       to: "/admin/reports",
     },
     {
-    title: "Analysis",
+    title: "Phân tích",
     icon: (
     <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +169,7 @@ const SidebarMenu = () => {
       to: "/admin/customer-analytics",
     },
     {
-      title: "Promotion",
+      title: "Quản lý khuyến mãi",
      icon: (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +189,7 @@ const SidebarMenu = () => {
         to: "/admin/promotions",
       },
       {
-        title: "Review",
+        title: "Đánh giá",
     icon: (
   <svg
     xmlns="http://www.w3.org/2000/svg"

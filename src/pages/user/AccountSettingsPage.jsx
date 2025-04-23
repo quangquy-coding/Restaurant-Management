@@ -396,7 +396,7 @@ const AccountSettingsPage = () => {
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <div className="md:flex">
             {/* Sidebar */}
-            <div className="md:w-64 bg-gray-50 p-6 border-r">
+            <div className="md:w-70 bg-gray-50 p-6 border-r">
               <nav className="space-y-2">
                 <button
                   onClick={() => setActiveTab("profile")}

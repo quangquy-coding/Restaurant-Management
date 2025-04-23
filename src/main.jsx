@@ -15,9 +15,10 @@ import CheckoutPage from "./components/cart/CheckoutPage"
 import AboutPage from "./pages/about/AboutPage"
 import ContactPage from "./pages/contact/ContactPage"
 import ProfilePage from "./pages/user/ProfilePage"
-import UserOrdersPage from "./pages/user/OrdersPage"
+// import UserOrdersPage from "./pages/user/OrdersPage"
 import LoginPage from "./pages/login"
 import RegisterPage from "./pages/register"
+
 
 
 
@@ -59,16 +60,16 @@ import AdminReviewsPage from './pages/admin/AdminReviewsPage'
 
 
 
-
 import "./index.css"
 import "./App.css"
 
 const router = createBrowserRouter([
-  // User routes with header and footer
+
   {
     path: "/",
     element: <UserLayout />,
     children: [
+      
       {
         index: true,
         element: <HomePage />,
@@ -78,10 +79,10 @@ const router = createBrowserRouter([
         path: "order",
         element: <OrderPage />,
       },
-      {
-        path: "order",
-        element: <OrderPage />,
-      },
+      // {
+      //   path: "order",
+      //   element: <OrderPage />,
+      // },
       {
         path: "review",
         element: <ReviewPage />,
@@ -120,20 +121,20 @@ const router = createBrowserRouter([
         element: <DishDetailPage />,
       },
    
-      {
-        path: "categories-management",
-        element: <CategoriesManagementPage />,
-      },
+      // {
+      //   path: "categories-management",
+      //   element: <CategoriesManagementPage />,
+      // },
       
       {
         path: "account-settings",
         element: <AccountSettingsPage />,
       },
       
-      {
-        path: "orders",
-        element: <UserOrdersPage />,
-      },
+      // {
+      //   path: "orders",
+      //   element: <UserOrdersPage />,
+      // },
       {
         path: "login",
         element: <LoginPage />,
@@ -227,19 +228,24 @@ const router = createBrowserRouter([
         path: "reviews",
         element: <AdminReviewsPage />,
       },
+      {
+        path: "staff",
+        element: <StaffOrdersPage />,
+      },
+
      
     ],
   },
 
   // Staff route (also no header/footer)
-  {
-    path: "/staff",
-    element: (
-      <PrivateRoute>
-        <StaffOrdersPage />
-      </PrivateRoute>
-    ),
-  },
+  // {
+  //   path: "/staff",
+  //   element: (
+  //     <PrivateRoute>
+  //       <StaffOrdersPage />
+  //     </PrivateRoute>
+  //   ),
+  // },
 ])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
