@@ -179,7 +179,7 @@ const Header = () => {
                           className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100"
                         >
                           <History  className="h-4 w-4" />
-                          Lịch sử đơn hàng
+                          Đơn hàng
                         </Link>
                       </li>
                       <li>
