@@ -51,10 +51,10 @@ const ShoppingCart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-red-50 p-4">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
           <CartIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold mb-2">Giỏ hàng trống</h2>
+          <h2 className="text-2xl font-bold mb-2 ">Giỏ hàng trống</h2>
           <p className="text-gray-600 mb-6">Bạn chưa thêm món ăn nào vào giỏ hàng</p>
           <Link 
             to="/menu" 
@@ -68,7 +68,7 @@ const ShoppingCart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-red-50 p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Giỏ hàng của bạn</h1>
         

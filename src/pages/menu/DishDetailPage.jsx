@@ -228,7 +228,7 @@ const DishDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-red-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
         {/* Back button */}
         <Link to="/menu" className="inline-flex items-center text-blue-600 hover:underline mb-6">
@@ -379,7 +379,7 @@ const DishDetailPage = () => {
         {relatedDishes.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold mb-6">Món ăn liên quan</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedDishes.map((relatedDish) => (
                 <Link
                   to={`/menu/${relatedDish.id}`}

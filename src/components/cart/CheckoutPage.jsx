@@ -84,7 +84,7 @@ const CheckoutPage = () => {
 
   if (orderComplete) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
+      <div className="min-h-screen bg-red-50 p-4 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-md p-8 max-w-md w-full text-center">
           <CheckCircle2 className="mx-auto h-16 w-16 text-green-500 mb-4" />
           <h1 className="text-2xl font-bold mb-2">Đặt hàng thành công!</h1>
@@ -105,7 +105,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-red-50 p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Thanh toán</h1>
         

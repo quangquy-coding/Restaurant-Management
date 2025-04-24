@@ -7,6 +7,7 @@ import Phobotai from "../../assets/phobotai.png"
 import Tomthit from "../../assets/tomthit.jpg"
 import Buncha from "../../assets/buncha.jpg"
 import Comrang from "../../assets/comrang.jpg"
+import Nhahang1 from "../../assets/nhahang2025.jpg"
 
 // Dữ liệu món ăn nổi bật
 const featuredDishes = [
@@ -98,50 +99,51 @@ const HomePage = () => {
   }
 
   return (
-    <div>
+    <div className="bg-red-50">
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/placeholder.svg?height=1080&width=1920')" }}
+  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{ backgroundImage: `url(${Nhahang1})` }}
+  >
+    <div className="absolute inset-0 bg-opacity-50"></div>
+  </div>
+  <div className="container mx-auto px-4 relative z-10" >
+    <div className="max-w-2xl text-center md:text-left">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+        Trải nghiệm ẩm thực tuyệt vời tại Nhà hàng Quang Quý
+      </h1>
+      <p className="text-xl text-white mb-8">
+        Khám phá hương vị đặc trưng với các món ăn được chế biến từ nguyên liệu tươi ngon nhất
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+        <Link
+          to="/menu"
+          className="px-6 py-3 rounded-md text-white bg-blue-600 hover:bg-blue-700 text-base font-medium text-center"
         >
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Trải nghiệm ẩm thực tuyệt vời tại Nhà hàng Quang Quý
-            </h1>
-            <p className="text-xl text-white mb-8">
-              Khám phá hương vị đặc trưng với các món ăn được chế biến từ nguyên liệu tươi ngon nhất
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Link
-                to="/menu"
-                className="px-6 py-3 rounded-md text-white bg-blue-600 hover:bg-blue-700 text-base font-medium text-center"
-              >
-                Xem thực đơn
-              </Link>
-              <Link
-                to="/reservation"
-                className="px-6 py-3 rounded-md border border-white text-white hover:bg-white hover:bg-opacity-10 text-base font-medium text-center"
-              >
-                Đặt bàn ngay
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+          Xem thực đơn
+        </Link>
+        <Link
+          to="/reservation"
+          className="px-6 py-3 rounded-md border border-white text-white hover:bg-green-400 hover:bg-opacity-10 text-base font-medium text-center"
+        >
+          Đặt bàn ngay
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* About Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50  bg-red-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="w-full md:w-1/2">
               <img src={Quy} alt="Nhà hàng Quang Quý" className="rounded-lg shadow-lg w-full h-auto" />
             </div>
-            <div className="w-full md:w-1/2">
+            <div className="w-full md:w-1/2 bg-red-50" >
               <h2 className="text-3xl font-bold mb-6">Về Nhà hàng Quang Quý</h2>
               <p className="text-gray-600 mb-6">
                 Nhà hàng Quang Quý được thành lập vào năm 2025, với sứ mệnh mang đến cho khách hàng những trải nghiệm ẩm thực tuyệt vời nhất.
@@ -222,17 +224,17 @@ const HomePage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+      <section className="py-16 bg-gray-50 bg-red-50">
+        <div className="container mx-auto px-4 ">
+          <div className="text-center mb-12 ">
             <h2 className="text-3xl font-bold mb-4">Khách hàng nói gì về chúng tôi</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Những đánh giá chân thực từ khách hàng đã trải nghiệm dịch vụ tại nhà hàng của chúng tôi
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="max-w-4xl mx-auto 0" >
+            <div className="bg-green-200 rounded-lg shadow-lg p-8">
               <div className="flex justify-center mb-4">
                 {testimonials.map((_, index) => (
                   <button
@@ -263,7 +265,7 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-blue-600 text-white">
+      <section className="py-16 text-black  bg-red-50">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Đặt bàn ngay hôm nay</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
@@ -271,7 +273,7 @@ const HomePage = () => {
           </p>
           <Link
             to="/reservation"
-            className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-100"
+            className="inline-flex items-center justify-center px-6 py-3 border border-blue text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-100"
           >
             Đặt bàn ngay
           </Link>

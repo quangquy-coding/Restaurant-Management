@@ -363,9 +363,9 @@ const AdvancedSearchPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50  bg-red-50">
       {/* Header with search and filters */}
-      <div className="bg-white shadow-sm sticky top-0 z-10">
+      <div className="bg-white shadow-sm sticky top-0 z-10 ">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold ">Danh mục</h1>
@@ -412,8 +412,8 @@ const AdvancedSearchPage = () => {
         </div>
       </div>
   
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex flex-row gap-6">
+      <div className="max-w-7xl mx-auto px-4 py-6 ">
+        <div className="flex flex-row gap-6 ">
           {/* Advanced filters sidebar */}
           {showFilters && (
             <div className="md:w-1/4 bg-white p-4 rounded-lg shadow">

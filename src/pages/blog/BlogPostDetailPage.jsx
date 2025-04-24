@@ -138,7 +138,7 @@ const BlogPostDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 ">
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -147,7 +147,7 @@ const BlogPostDetailPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="container mx-auto px-4 py-16  bg-red-50">
       {/* Breadcrumbs */}
       <nav className="flex mb-8 text-sm text-gray-500">
         <Link to="/" className="hover:text-blue-600 transition-colors">Trang chủ</Link>

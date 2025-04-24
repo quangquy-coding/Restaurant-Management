@@ -105,7 +105,7 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="py-16 bg-gray-50 min-h-screen">
+    <div className="py-16 bg-red-50 min-h-screen">
       <div className="container mx-auto px-4 pt-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
