@@ -99,7 +99,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="bg-red-50">
+    <div className="bg-white-50">
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center">
