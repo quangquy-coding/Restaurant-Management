@@ -224,7 +224,7 @@ const HomePage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gray-50 bg-red-50">
+      <section className="py-16  bg-red-50">
         <div className="container mx-auto px-4 ">
           <div className="text-center mb-12 ">
             <h2 className="text-3xl font-bold mb-4">Khách hàng nói gì về chúng tôi</h2>

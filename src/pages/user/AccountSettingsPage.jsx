@@ -96,6 +96,16 @@ const AccountSettingsPage = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [successMessage, setSuccessMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Tạo URL tạm thời cho ảnh
+      setFormData((prevData) => ({
+        ...prevData,
+        avatar: imageUrl,
+      }));
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -159,9 +169,28 @@ const AccountSettingsPage = () => {
         return (
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row gap-6 items-start">
-              <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
-                <img src={formData.avatar || "/placeholder.svg"} alt="Profile" className="w-full h-full object-cover" />
-              </div>
+            <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+              <img
+                src={formData.avatar || "/placeholder.svg"}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+              {isEditing && (
+                <label
+                  htmlFor="avatarUpload"
+                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white cursor-pointer"
+                >
+                  <span>Chọn ảnh</span>
+                  <input
+                    type="file"
+                    id="avatarUpload"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                  />
+                </label>
+              )}
+            </div>
 
               <div className="flex-1 space-y-4">
                 <div>
@@ -489,24 +518,24 @@ const AccountSettingsPage = () => {
 
                 {(activeTab === "profile" || activeTab === "password" || activeTab === "notifications") && (
                   <div className="mt-8 flex justify-end">
-                    {activeTab === "profile" && !isEditing ? (
-                      <button
-                        type="button"
-                        onClick={() => setIsEditing(true)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                      >
-                        Chỉnh sửa thông tin
-                      </button>
-                    ) : (
-                      <button
-                        type="submit"
-                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Lưu thay đổi
-                      </button>
-                    )}
-                  </div>
+  {activeTab === "profile" && !isEditing ? (
+    <button
+      type="button"
+      onClick={() => setIsEditing(true)}
+      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+    >
+      Chỉnh sửa thông tin
+    </button>
+  ) : (
+    <button
+      type="submit"
+      className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+    >
+      <Save className="h-4 w-4 mr-2" />
+      Lưu thay đổi
+    </button>
+  )}
+</div>
                 )}
               </form>
             </div>

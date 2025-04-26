@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { CreditCard, Wallet, BanknoteIcon, CheckCircle2, Clock, Users } from 'lucide-react';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [paymentMethod, setPaymentMethod] = useState("cash"); // Mặc định là tiền mặt
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     phone: "",
@@ -20,21 +20,21 @@ const CheckoutPage = () => {
   const [orderId, setOrderId] = useState(null);
 
   useEffect(() => {
-    // Load cart items from localStorage
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      const parsedCart = JSON.parse(savedCart);
-      setCartItems(parsedCart);
-      
-      // Calculate total
-      const sum = parsedCart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    // Load các món được chọn từ localStorage
+    const savedCheckoutItems = localStorage.getItem("checkoutItems");
+    if (savedCheckoutItems) {
+      const parsedItems = JSON.parse(savedCheckoutItems);
+      setCartItems(parsedItems);
+
+      // Tính tổng tiền
+      const sum = parsedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
       setTotal(sum);
     } else {
-      // Redirect to cart if no items
+      // Nếu không có món nào, quay lại giỏ hàng
       navigate("/cart");
     }
-    
-    // Load customer info if available
+
+    // Load thông tin khách hàng nếu có
     const savedCustomerInfo = localStorage.getItem("customerInfo");
     if (savedCustomerInfo) {
       setCustomerInfo(JSON.parse(savedCustomerInfo));
@@ -52,11 +52,11 @@ const CheckoutPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Save customer info for future use
+
+    // Lưu thông tin khách hàng
     localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
-    
-    // Create order object
+
+    // Tạo đơn hàng
     const order = {
       items: cartItems,
       total,
@@ -64,19 +64,23 @@ const CheckoutPage = () => {
       customerInfo,
       orderDate: new Date().toISOString()
     };
-    
-    // In a real app, you would send this to your API
+
+    // Giả lập gửi đơn hàng
     console.log("Submitting order:", order);
-    
-    // Simulate API call
+
+    // Giả lập API call
     setTimeout(() => {
-      // Generate random order ID
       const newOrderId = "OD" + Math.floor(100000 + Math.random() * 900000);
       setOrderId(newOrderId);
-      
-      // Clear cart after successful order
-      localStorage.removeItem("cart");
-      
+
+      // Xóa các món đã đặt khỏi giỏ hàng
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const remainingItems = savedCart.filter(item => !cartItems.some(checkedItem => checkedItem.id === item.id));
+      localStorage.setItem("cart", JSON.stringify(remainingItems));
+
+      // Xóa các món trong checkoutItems
+      localStorage.removeItem("checkoutItems");
+
       setLoading(false);
       setOrderComplete(true);
     }, 1500);
@@ -104,13 +108,23 @@ const CheckoutPage = () => {
     );
   }
 
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-600">
+          Không có món nào để thanh toán. Quay lại <Link to="/cart" className="text-blue-600">giỏ hàng</Link>.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-red-50 p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Thanh toán</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Order Summary */}
+          {/* Tóm tắt đơn hàng */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-4 border-b">
               <h2 className="font-semibold">Tóm tắt đơn hàng</h2>
@@ -151,7 +165,7 @@ const CheckoutPage = () => {
             </div>
           </div>
           
-          {/* Checkout Form */}
+          {/* Form thanh toán */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-4 border-b">
               <h2 className="font-semibold">Thông tin thanh toán</h2>

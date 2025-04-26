@@ -4,21 +4,23 @@ import { ShoppingCartIcon as CartIcon, Trash2, Plus, Minus, CreditCard } from 'l
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]); // Mặc định không chọn món nào
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // In a real app, you would fetch cart items from an API or localStorage
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       const parsedCart = JSON.parse(savedCart);
       setCartItems(parsedCart);
-      calculateTotal(parsedCart);
+      calculateTotal([], parsedCart); // Không chọn món nào khi vào trang
     }
   }, []);
 
-  const calculateTotal = (items) => {
-    const sum = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const calculateTotal = (selectedIds, items) => {
+    const sum = items
+      .filter(item => selectedIds.includes(item.id))
+      .reduce((acc, item) => acc + item.price * item.quantity, 0);
     setTotal(sum);
   };
 
@@ -30,23 +32,52 @@ const ShoppingCart = () => {
       }
       return item;
     });
-    
+
     setCartItems(updatedCart);
-    calculateTotal(updatedCart);
+    calculateTotal(selectedItems, updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   const removeItem = (id) => {
     const updatedCart = cartItems.filter(item => item.id !== id);
+    const updatedSelected = selectedItems.filter(itemId => itemId !== id);
     setCartItems(updatedCart);
-    calculateTotal(updatedCart);
+    setSelectedItems(updatedSelected);
+    calculateTotal(updatedSelected, updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
+  const toggleSelectItem = (id) => {
+    const updatedSelected = selectedItems.includes(id)
+      ? selectedItems.filter(itemId => itemId !== id) // Bỏ chọn
+      : [...selectedItems, id]; // Chọn thêm
+
+    setSelectedItems(updatedSelected);
+    calculateTotal(updatedSelected, cartItems);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedItems.length === cartItems.length) {
+      // Nếu tất cả đã được chọn, bỏ chọn tất cả
+      setSelectedItems([]);
+      calculateTotal([], cartItems);
+    } else {
+      // Nếu chưa chọn tất cả, chọn tất cả
+      const allIds = cartItems.map(item => item.id);
+      setSelectedItems(allIds);
+      calculateTotal(allIds, cartItems);
+    }
+  };
+
   const handleCheckout = () => {
-    // Save cart to localStorage before navigating
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    navigate("/checkout");
+    if (selectedItems.length === 0) {
+      alert("Vui lòng chọn ít nhất một món để thanh toán."); // Hiển thị thông báo lỗi
+      return;
+    }
+  
+    const itemsToCheckout = cartItems.filter(item => selectedItems.includes(item.id));
+    localStorage.setItem("checkoutItems", JSON.stringify(itemsToCheckout)); // Lưu các món được chọn vào localStorage
+    navigate("/checkout"); // Điều hướng đến trang thanh toán
   };
 
   if (cartItems.length === 0) {
@@ -73,13 +104,25 @@ const ShoppingCart = () => {
         <h1 className="text-2xl font-bold mb-6">Giỏ hàng của bạn</h1>
         
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-          <div className="p-4 border-b">
-            <h2 className="font-semibold">Các món đã chọn</h2>
+          <div className="p-4 border-b flex items-center">
+            <input
+              type="checkbox"
+              checked={selectedItems.length === cartItems.length} // Kiểm tra nếu tất cả đã được chọn
+              onChange={toggleSelectAll}
+              className="h-5 w-5 text-blue-600 border-gray-300 rounded mr-4"
+            />
+            <h2 className="font-semibold">Chọn tất cả</h2>
           </div>
           
           <ul className="divide-y divide-gray-200">
             {cartItems.map(item => (
               <li key={item.id} className="p-4 flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectedItems.includes(item.id)}
+                  onChange={() => toggleSelectItem(item.id)}
+                  className="h-5 w-5 text-blue-600 border-gray-300 rounded mr-4"
+                />
                 <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                   <img 
                     src={item.image || "/placeholder.svg?height=64&width=64"} 
@@ -149,6 +192,7 @@ const ShoppingCart = () => {
           <button 
             onClick={handleCheckout}
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
+            disabled={selectedItems.length === 0} // Vô hiệu hóa nếu không có món nào được chọn
           >
             <CreditCard className="mr-2 h-5 w-5" />
             Thanh toán

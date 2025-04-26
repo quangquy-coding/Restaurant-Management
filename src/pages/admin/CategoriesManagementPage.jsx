@@ -288,18 +288,30 @@ const CategoriesManagementPage = () => {
   }
   
   
-  // Hàm để xử lý khi chọn ảnh
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // Tạo URL tạm thời cho ảnh
+ // Hàm xử lý khi chọn ảnh
+ const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const imageUrl = URL.createObjectURL(file); // Tạo URL tạm thời cho ảnh
+    if (isEditCategoryModalOpen && categoryToEdit) {
+      // Cập nhật ảnh trong danh mục đang chỉnh sửa
+      setCategoryToEdit((prevCategory) => ({
+        ...prevCategory,
+        image: imageUrl,
+      }));
       setNewCategory((prevCategory) => ({
         ...prevCategory,
-        image: imageUrl, // Cập nhật ảnh trong state
+        image: imageUrl,
+      }));
+    } else {
+      // Cập nhật ảnh trong danh mục mới
+      setNewCategory((prevCategory) => ({
+        ...prevCategory,
+        image: imageUrl,
       }));
     }
-  };
-  
+  }
+};
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -733,45 +745,49 @@ const CategoriesManagementPage = () => {
                   </div>
 
                   <div>
-      <label htmlFor="image" className="block text-sm font-medium text-gray-700">
-        Hình ảnh
-      </label>
-      <div className="mt-1 flex items-center">
-        <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-          {isEditCategoryModalOpen && categoryToEdit ? (
-            <img
-              src={categoryToEdit.image || "/placeholder.svg"}
-              alt="Category"
-              className="h-full w-full object-cover"
-            />
-          ) : newCategory.image ? (
-            <img
-              src={newCategory.image} // Hiển thị ảnh đã chọn
-              alt="Selected Category"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          )}
-        </span>
-        <button
-          type="button"
-          className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          onClick={handleChangeClick} // Khi bấm vào "Chọn ảnh" hoặc "Sửa ảnh", sẽ mở input file
-        >
-          {isEditCategoryModalOpen ? "Sửa ảnh" : "Chọn ảnh"} {/* Điều chỉnh văn bản của nút */}
-        </button>
-        <input
-          type="file"
-          id="image"
-          ref={fileInputRef} // Kết nối với ref
-          className="hidden"
-          onChange={handleImageChange} // Gọi hàm khi người dùng chọn ảnh
+  <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+    Hình ảnh
+  </label>
+  <div className="mt-1 flex items-center">
+    <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+      {isEditCategoryModalOpen && categoryToEdit ? (
+        <img
+          src={newCategory.image || categoryToEdit.image || "/placeholder.svg"}
+          alt="Category"
+          className="h-full w-full object-cover"
         />
-      </div>
-    </div>
+      ) : newCategory.image ? (
+        <img
+          src={newCategory.image}
+          alt="Selected Category"
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <svg
+          className="h-full w-full text-gray-300"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      )}
+    </span>
+    <button
+      type="button"
+      className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      onClick={handleChangeClick}
+    >
+      {isEditCategoryModalOpen ? "Sửa ảnh" : "Chọn ảnh"}
+    </button>
+    <input
+      type="file"
+      id="image"
+      ref={fileInputRef}
+      className="hidden"
+      onChange={handleImageChange}
+    />
+  </div>
+</div>
 
                 </div>
 

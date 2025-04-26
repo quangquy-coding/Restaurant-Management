@@ -547,7 +547,7 @@ const AdvancedSearchPage = () => {
       </button>
     </div>
   ) : (
-    <div className="grid grid-cols-2 gap-4 sm:gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
   {filteredItems.map((item) => (
     <div key={item.id} className="relative h-full">
       <Link to={`/menu/${item.id}`} className="block h-full">
@@ -581,11 +581,16 @@ const AdvancedSearchPage = () => {
                 )}
               </div>
 
-              <p className="text-gray-600 text-sm mb-2 line-clamp-2">{item.description}</p>
+              <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                {item.description}
+              </p>
 
               <div className="flex flex-wrap gap-1 mb-3">
                 {item.ingredients.slice(0, 3).map((ingredient, index) => (
-                  <span key={index} className="bg-gray-100 text-xs px-2 py-1 rounded-full">
+                  <span
+                    key={index}
+                    className="bg-gray-100 text-xs px-2 py-1 rounded-full"
+                  >
                     {ingredient}
                   </span>
                 ))}
@@ -625,6 +630,8 @@ const AdvancedSearchPage = () => {
     </div>
   ))}
 </div>
+
+
   )}
 </div>
 
