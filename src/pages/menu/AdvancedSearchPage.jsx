@@ -12,10 +12,10 @@ import Chekhucbach from '../../assets/chekhucbach.jpg'
 import Tradaocamsa from '../../assets/tradaocamsa.webp'
 
 import Banhxeo1 from "../../assets/banhxeo1.jpeg";
-import Caphesua from "../../assets/caphesua.webp"
+import Caphesua from "../../assets/caphesua.jpg"
 import Goingosen from '../../assets/goingosen.avif'
 import Canhchuacaloc from '../../assets/canhchuacaloc.jpg'
-import Comgahainam from '../../assets/comgahainam.jpeg'
+import Comgahainam from '../../assets/comgahainam.webp'
 import Chethai from  '../../assets/chethai.jpg'
 
 
